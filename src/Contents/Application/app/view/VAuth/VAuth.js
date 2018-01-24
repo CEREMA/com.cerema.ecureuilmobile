@@ -13,21 +13,37 @@ App.viewController.define('VAuth', {
 
     },
     onShow: function() {
-        var io = new App.IO();
-
-        App.DB.get('gestionao2://mobile', function(r) {
-            console.log(r);
-        });
+        var settings = App.key.get('settings');
 
         function getID() {
-            io.connect('http://ecureuil.applications.siipro.fr');
-            io.on('connect', function() {
-                console.log('connected.');
-                io.subscribe('#' + App.key.get('keycode'));
-                io.on('#' + App.key.get('keycode'), function() {
-
+            App.DB.post('gestionao2://mobile', [{
+                MobileId: App.key.get('keycode')
+            }], function(r) {
+                var IO = new App.IO('http://ecureuil.applications.siipro.fr');
+                IO.on('connect', function() {
+                    console.log('connected.');
+                    IO.subscribe('#' + App.key.get('keycode'));
+                    IO.on('#' + App.key.get('keycode'), function() {
+                        App.$('.keycode').html('OK !');
+                        App.DB.post('gestionao2://mobile', {
+                            MobileId: App.key.get('keycode'),
+                            Synchro: 1
+                        }, function(e, r) {
+                            if (e.affectedRows == 1) {
+                                IO.send('#' + App.key.get('keycode') + 'OK', true, "*");
+                                App.key.set('AUTH', App.key.get('keycode'));
+                                App.key.set('Tinder', []);
+                                setTimeout(function() {
+                                    settings.tinder = 0;
+                                    App.navigator.popPage({ animation: "lift" });
+                                }, 1000);
+                            }
+                        });
+                    });
                 });
+
             });
+
         };
         var MyService = api.ecureuilmobile.MyService;
         if (!App.key.get('keycode')) {

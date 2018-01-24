@@ -228,3 +228,44 @@
     margin-top: 30px;
     font-weight: bold;
 }
+
+.logo {
+    width: 100%;
+    height: 70px;
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.l1 {
+    background-image: url(img/default.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.l2 {
+    background-image: url(img/boamp.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.l3 {
+    background-image: url(img/lemoniteur.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.l4 {
+    background-image: url(img/jal.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.l5 {
+    background-image: url(img/joue.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.objetT {
+    margin-top: 5px;
+    font-size: 18px;
+}

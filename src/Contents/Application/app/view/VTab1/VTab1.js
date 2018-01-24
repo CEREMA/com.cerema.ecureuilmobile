@@ -8,16 +8,22 @@ App.viewController.define('VTab1', {
             },
             'ons-list#listAO': {
                 click: this.listOnClick
+            },
+            '#qdn': {
+                click: this.open_quoideneuf
             }
         });
 
+    },
+    open_quoideneuf: function() {
+        App.navigator.pushPage('view/VTinder/VTinder.html', { animation: "lift" });
     },
     listOnClick: function(event) {
         var list = App.$(event.target).up('ons-list-item').attr('id');
         var data = App.key.get('AO');
         var domaine = list.split('d')[1];
         var response = data.query('SELECT * FROM ? WHERE id_domaine=' + domaine);
-        App.$('#Navigator').dom().pushPage('view/VAO/VAO.html', { data: { items: response } });
+        App.navigator.pushPage('view/VAO/VAO.html', { data: { items: response } });
     },
     onShow: function(me) {
 
@@ -53,8 +59,10 @@ App.viewController.define('VTab1', {
         var interval = setInterval(function() {
             var ao = App.key.get('AO');
             if (ao) {
-                clearInterval(interval);
-                loadAO(ao);
+                if (ao.length > 0) {
+                    clearInterval(interval);
+                    loadAO(ao);
+                }
             }
         }, 1000);
     }

@@ -9,7 +9,8 @@ App.application({
         'VTinder',
         'VAuth',
         'VTab3',
-        'VTab2'
+        'VTab2',
+        'VTabPreferences'
     ],
     modules: Settings.MODULES,
 

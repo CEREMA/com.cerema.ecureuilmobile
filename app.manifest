@@ -25,7 +25,7 @@
         "fr-FR"
     ],
     "paths": {
-        "@omneedia": "http://cdn.omneedia.com",
+        "@omneedia": "/cdn",
         "@cdnjs": "https://cdnjs.cloudflare.com/ajax/libs",
         "Contents": "Contents/Application/app",
         "Lib": "Contents/Application/app/libraries"
@@ -92,12 +92,13 @@
     "modules": [],
     "plugins": [
         "cordova-plugin-whitelist",
-	    "cordova-sqlite-storage",
         "cordova-plugin-device",
+        "cordova-plugin-whitelist",
+	    "cordova-sqlite-storage",
         "cordova-plugin-statusbar",
+        "cordova-plugin-globalization",
         "cordova-plugin-network-information",
         "cordova-plugin-document-viewer",
-        "cordova-plugin-globalization",
         "cordova-plugin-dialogs",
         "cordova-plugin-file",
         "cordova-plugin-file-transfer",
@@ -106,6 +107,7 @@
     "api": [
         "MyService@ecureuilmobile",
         "AO@ecureuil",
+        "Feed@ecureuil",
         "MyService"
     ],
     "db": [

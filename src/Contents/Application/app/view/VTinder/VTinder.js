@@ -1,7 +1,7 @@
 App.viewController.define('VTinder', {
 
     require: [
-
+        "api.ecureuil.Feed"
     ],
 
     init: function() {
@@ -12,7 +12,8 @@ App.viewController.define('VTinder', {
             },
             '#closebutton': {
                 click: function(e) {
-                    App.$('#Navigator').dom().popPage({ animation: "lift" });
+                    App.key.set('lastpage', 'tinder');
+                    App.navigator.popPage({ animation: "lift" });
                 }
             }
         });
@@ -21,24 +22,44 @@ App.viewController.define('VTinder', {
     TinderShow: function(me) {
         App.key.set('first_timer', 2);
         var ul = App.$("#TinderUL");
-        var data = me.target.data.items;
+
+        var data = App.key.get('AO').query('select * from ? where IdAppelOffre in (' + App.key.get('Tinder').join(',') + ')');
 
         var tpl = [
-            '<li class="pane$i">',
+            '<li id="TIN{IdAppelOffre}" class="pane">',
+            '<div class="logo l{IdSource}"></div>',
+            '<div class="objetT"><b>{Objet}</b></div>',
+            '<br><small>{Observation}</small>',
             '</li>'
-        ].join('');
+        ];
 
-        var max = 10;
-        if (data.length < max) max = data.length;
-        for (var i = 0; i < max; i++) {
-            App.$('<li class="pane' + i + '"></li>').appendTo(ul);
-        };
+        var item = tpl.render(data);
+        App.$(item).appendTo(ul);
+
         $("#tinderslide").jTinder({
             onDislike: function(item) {
-                //alert('Dislike image ' + (item.index() + 1));
+                item = item[0].id.split('TIN')[1];
+                var tinder = App.key.get('Tinder').remove(item * 1);
+                console.log(tinder);
+                App.key.set('Tinder', tinder);
+                if (App.key.get('Tinder').length == 0) {
+                    App.key.set('lastpage', 'tinder');
+                    App.navigator.popPage({ animation: "lift" });
+                }
             },
             onLike: function(item) {
-                //alert('Like image ' + (item.index() + 1));
+                item = item[0].id.split('TIN')[1];
+                var fav = App.key.get('Favorites');
+                if (fav.indexOf(item) == -1) {
+                    fav.push(item);
+                };
+                App.key.set('Favorites', fav);
+                var tinder = App.key.get('Tinder').remove(item * 1);
+                App.key.set('Tinder', tinder);
+                if (App.key.get('Tinder').length == 0) {
+                    App.key.set('lastpage', 'tinder');
+                    App.navigator.popPage({ animation: "lift" });
+                }
             },
             animationRevertSpeed: 200,
             animationSpeed: 400,
